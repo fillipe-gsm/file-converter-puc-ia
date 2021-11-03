@@ -1,22 +1,42 @@
+"""Converts CSV file(s) to a JSON format"""
+import json
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 
-def csv2json(file_path: str, separator: str = ","):
-    """"""
+def csv2json(
+    input_path: str,
+    output_path: str = ".",
+    separator: str = ",",
+    prefix: str = "",
+) -> List[Dict[str, Any]]:
+    """Converts file(s) from CSV format to JSON
+    In case of a directory, all files must have the CSV extension and the same
+    separator.
+    """
 
-    if Path(file_path).is_file():
-        file_names = [file_path]
+    if Path(input_path).is_dir():
+        file_names = list(input_path.rglob("*.csv"))
+    else:
+        file_names = [input_path]
 
     json_lists = [
-        _csv2json_file(file_name, separator=separator)
+        _convert_file(file_name, separator=separator)
         for file_name in file_names
     ]
 
+    for file_name, json_list in zip(file_names, json_lists):
+        json_file_name = f"{output_path}/{prefix}{file_name.stem}.json"
+        with open(json_file_name, "w", encoding="utf-8") as f:
+            json.dump(json_list, f, indent=4)
+
+    return json_lists
 
 
-def csv2json_file(file_name: str, separator: str = ",") -> List[Dict[str, str]]:
-    """Converts file(s) from CSV format to JSON"""
+def _convert_file(
+    file_name: str, separator: str = ","
+) -> List[Dict[str, str]]:
+    """Converts file from CSV format to JSON"""
 
     def _process_line(
         line: str
@@ -29,7 +49,7 @@ def csv2json_file(file_name: str, separator: str = ",") -> List[Dict[str, str]]:
 
         return d_json
 
-    with open(file_name, "r") as f:
+    with open(file_name, "r", encoding="utf-8") as f:
         header = next(f)
         keys = header.strip().split(separator)
         json_list = [_process_line(line) for line in f]

@@ -18,3 +18,11 @@ mypy = "^0.910"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pylint.messages_control]
+disable="""
+invalid-name
+"""
+
+[tool.pylint.format]
+max-line-length=79

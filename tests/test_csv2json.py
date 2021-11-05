@@ -3,15 +3,15 @@ from pathlib import Path
 
 import pytest
 
-from file_converter import file_converter
+from file_converter import csv2json
 
 
 @pytest.mark.parametrize(
   "file_name,separator", [
-    ("tests/data/sample_csv_semi_colon.csv", ";"),
-    ("tests/data/sample_csv_tab.csv", "\t"),
-    ("tests/data/sample_csv_colon.csv", ":"),
-    ("tests/data/sample_csv_comma.csv", ","),
+    ("tests/data/csv_data/sample_csv_semi_colon.csv", ";"),
+    ("tests/data/csv_data/sample_csv_tab.csv", "\t"),
+    ("tests/data/csv_data/sample_csv_colon.csv", ":"),
+    ("tests/data/csv_data/sample_csv_comma.csv", ","),
   ]
 )
 def test_csv_conversion_with_single_file(file_name, separator, tmp_path):
@@ -21,7 +21,6 @@ def test_csv_conversion_with_single_file(file_name, separator, tmp_path):
         - There are as many elements as CSV rows.
     """
     # Given
-    # file_name = Path.cwd().joinpath("tests/data/sample_csv.csv")
     file_name = Path.cwd().joinpath(file_name)
     expected_keys = {
         "apn",
@@ -35,7 +34,7 @@ def test_csv_conversion_with_single_file(file_name, separator, tmp_path):
     }
 
     # When
-    json_list = file_converter.csv2json(
+    json_list = csv2json.csv2json(
         file_name, separator=separator, output_path=tmp_path
     )[0]
 
@@ -51,10 +50,10 @@ def test_csv_conversion_with_single_file_missing_info(tmp_path):
     In this sample, the second row has a missing `zip_code` and `price`.
     """
     # Given
-    file_name = Path.cwd().joinpath("tests/data/sample_csv_missing_info.csv")
+    file_name = Path.cwd().joinpath("tests/data/csv_data/sample_csv_missing_info.csv")
 
     # When
-    json_list = file_converter.csv2json(
+    json_list = csv2json.csv2json(
         file_name, separator=",", output_path=tmp_path
     )[0]
 
@@ -68,11 +67,11 @@ def test_csv_conversion_with_path(tmp_path):
     """Each CSV file in a path must be properly converted."""
 
     # Given
-    input_path = Path.cwd().joinpath("tests/data/sample_dir")
+    input_path = Path.cwd().joinpath("tests/data/csv_data/sample_dir")
     num_files = 4
 
     # When
-    json_lists = file_converter.csv2json(
+    json_lists = csv2json.csv2json(
         input_path, separator=",", output_path=tmp_path
     )
 
@@ -86,10 +85,10 @@ def test_output_file_is_saved_on_disk(tmp_path):
     input.
     """
     # Given
-    file_name = Path.cwd().joinpath("tests/data/sample_csv_comma.csv")
+    file_name = Path.cwd().joinpath("tests/data/csv_data/sample_csv_comma.csv")
 
     # When
-    file_converter.csv2json(
+    csv2json.csv2json(
         file_name, separator=",", output_path=tmp_path
     )
 
@@ -103,11 +102,11 @@ def test_output_file_is_saved_on_disk(tmp_path):
 def test_output_file_is_saved_on_disk_with_prefix(tmp_path):
     """Save as before, but add a prefix to the file name"""
     # Given
-    file_name = Path.cwd().joinpath("tests/data/sample_csv_comma.csv")
+    file_name = Path.cwd().joinpath("tests/data/csv_data/sample_csv_comma.csv")
     prefix = "banana_"
 
     # When
-    file_converter.csv2json(
+    csv2json.csv2json(
         file_name, separator=",", output_path=tmp_path, prefix=prefix
     )
 

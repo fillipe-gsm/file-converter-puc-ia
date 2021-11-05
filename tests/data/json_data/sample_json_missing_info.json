@@ -1,0 +1,32 @@
+[
+    {
+        "apn": "06037-5782020007",
+        "zip_code": 91007,
+        "property_type": "residential",
+        "lot": 20492,
+        "sqft": 2991,
+        "beds": 4,
+        "baths": 2.5,
+        "price": 2168000
+    },
+    {
+        "apn": "06037-5782020008",
+        "zip_code": null,
+        "property_type": "commercial",
+        "lot": 6752,
+        "sqft": 1553,
+        "beds": 3,
+        "baths": 2,
+        "price": null
+    },
+    {
+        "apn": "06037-5782020018",
+        "zip_code": 92367,
+        "property_type": "residential",
+        "lot": 20492,
+        "sqft": 2991,
+        "beds": 2,
+        "baths": 5,
+        "price": 998999
+    }
+]

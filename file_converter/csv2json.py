@@ -10,7 +10,7 @@ def csv2json(
     output_path: str = ".",
     separator: str = ",",
     prefix: str = "",
-) -> List[Dict[str, Any]]:
+) -> List[List[Dict[str, Any]]]:
     """Converts file(s) from CSV format to JSON
     The converted files will be saved with the same file name, with a possible
     prefix if desired.

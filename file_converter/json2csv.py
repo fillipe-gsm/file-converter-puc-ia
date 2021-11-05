@@ -11,7 +11,7 @@ def json2csv(
     output_path: str = ".",
     separator: str = ",",
     prefix: str = "",
-) -> List[str]:
+) -> List[List[str]]:
     """Converts file(s) from CSV format to JSON
     In case of a directory, all files must have the CSV extension and the same
     separator.

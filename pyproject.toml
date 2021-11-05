@@ -1,5 +1,8 @@
 [tool.poetry]
 name = "file-converter-fgsm"
+packages = [
+    {include = "file_converter"}
+]
 version = "0.1.0"
 description = ""
 authors = ["Fillipe Goulart <fillipe.gsm@tutanota.com>"]
@@ -30,3 +33,6 @@ max-line-length=79
 
 [tool.black]
 line-length = 79
+
+[tool.poetry.scripts]
+file_converter = "file_converter.file_converter:file_converter"

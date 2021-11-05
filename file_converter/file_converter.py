@@ -23,18 +23,13 @@ SEPARATOR_HELP = (
     "When reading a folder, all files must have the same separator."
     r"Defaults to ',' (comma). In case of tab, write '\t'."
 )
-PREFIX_HELP = (
-    "Prefix added to the converted files. Defaults to empty string."
-)
+PREFIX_HELP = "Prefix added to the converted files. Defaults to empty string."
 
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.INFO,
-    format=(
-        "%(levelname)s: "
-        "%(message)s"
-    ),
+    format=("%(levelname)s: " "%(message)s"),
 )
 
 

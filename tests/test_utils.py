@@ -5,10 +5,13 @@ import pytest
 from file_converter import utils
 
 
-@pytest.mark.parametrize("input_path,extension", [
-    ("tests/data/csv_data/sample_csv_colon.csv", "csv"),
-    ("tests/data/json_data/sample_json.json", "json"),
-])
+@pytest.mark.parametrize(
+    "input_path,extension",
+    [
+        ("tests/data/csv_data/sample_csv_colon.csv", "csv"),
+        ("tests/data/json_data/sample_json.json", "json"),
+    ],
+)
 def test_log_is_raised_in_single_file(input_path, extension, caplog):
     """Check if a log is raises when converting a single file"""
     caplog.set_level(logging.INFO)
@@ -19,10 +22,13 @@ def test_log_is_raised_in_single_file(input_path, extension, caplog):
     assert "Converting a single file" in caplog.text
 
 
-@pytest.mark.parametrize("input_path,extension", [
-    ("tests/data/csv_data/", "csv"),
-    ("tests/data/json_data/", "json"),
-])
+@pytest.mark.parametrize(
+    "input_path,extension",
+    [
+        ("tests/data/csv_data/", "csv"),
+        ("tests/data/json_data/", "json"),
+    ],
+)
 def test_log_is_raised_in_folder(input_path, extension, caplog):
     """Check if a log is raises when converting a folder"""
     caplog.set_level(logging.INFO)

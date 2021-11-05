@@ -15,10 +15,11 @@ def csv2json(
     separator.
     """
 
-    if Path(input_path).is_dir():
-        file_names = list(input_path.rglob("*.csv"))
+    input_path_pos = Path(input_path)
+    if input_path_pos.is_dir():
+        file_names = list(input_path_pos.rglob("*.csv"))
     else:
-        file_names = [input_path]
+        file_names = [input_path_pos]
 
     json_lists = [
         _convert_file(file_name, separator=separator)

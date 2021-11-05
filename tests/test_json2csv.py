@@ -22,7 +22,6 @@ def test_json_conversion_with_single_file(file_name, separator, tmp_path):
     """
     # Given
     # file_name = Path.cwd().joinpath("tests/data/sample_csv.csv")
-    file_name = Path.cwd().joinpath(file_name)
     expected_keys = {
         "apn",
         "zip_code",

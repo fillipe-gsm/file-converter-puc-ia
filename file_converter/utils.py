@@ -13,7 +13,7 @@ def process_input_path(input_path: str, extension: str):
     """
     input_path_pos = Path(input_path)
     if input_path_pos.is_dir():
-        file_names = list(input_path_pos.rglob(f"*.{extension}"))
+        file_names = list(input_path_pos.glob(f"*.{extension}"))
         logger.info("Converting all files in a folder")
     else:
         file_names = [input_path_pos]

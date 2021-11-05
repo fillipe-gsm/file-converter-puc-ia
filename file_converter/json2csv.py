@@ -58,9 +58,7 @@ def json2csv(
     return csv_lists
 
 
-def _convert_file(
-    file_name: str, separator: str = ","
-) -> List[str]:
+def _convert_file(file_name: str, separator: str = ",") -> List[str]:
     """Converts file from CSV format to JSON"""
 
     with open(file_name, "r", encoding="utf-8") as f:

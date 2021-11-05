@@ -6,7 +6,15 @@ import pytest
 from file_converter.json2csv import json2csv
 
 
-@pytest.mark.parametrize("separator", [";", "\t", ":", ",",])
+@pytest.mark.parametrize(
+    "separator",
+    [
+        ";",
+        "\t",
+        ":",
+        ",",
+    ],
+)
 def test_json_conversion_with_single_file(separator, tmp_path):
     """
     The generated CSV file must be such that:
@@ -29,9 +37,7 @@ def test_json_conversion_with_single_file(separator, tmp_path):
     }
 
     # When
-    csv_lists = json2csv(
-        input_path, separator=separator, output_path=tmp_path
-    )
+    csv_lists = json2csv(input_path, separator=separator, output_path=tmp_path)
 
     # Then
     assert len(csv_lists) == 1  # only one file
@@ -53,9 +59,7 @@ def test_json_conversion_with_single_file_missing_info(tmp_path):
     separator = ","
 
     # When
-    csv_lists = json2csv(
-        input_path, separator=separator, output_path=tmp_path
-    )
+    csv_lists = json2csv(input_path, separator=separator, output_path=tmp_path)
 
     # Then
     assert len(csv_lists) == 1  # only one file

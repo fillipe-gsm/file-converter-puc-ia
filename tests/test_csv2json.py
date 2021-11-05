@@ -5,12 +5,13 @@ from file_converter import csv2json
 
 
 @pytest.mark.parametrize(
-  "input_path,separator", [
-    ("tests/data/csv_data/sample_csv_semi_colon.csv", ";"),
-    ("tests/data/csv_data/sample_csv_tab.csv", "\t"),
-    ("tests/data/csv_data/sample_csv_colon.csv", ":"),
-    ("tests/data/csv_data/sample_csv_comma.csv", ","),
-  ]
+    "input_path,separator",
+    [
+        ("tests/data/csv_data/sample_csv_semi_colon.csv", ";"),
+        ("tests/data/csv_data/sample_csv_tab.csv", "\t"),
+        ("tests/data/csv_data/sample_csv_colon.csv", ":"),
+        ("tests/data/csv_data/sample_csv_comma.csv", ","),
+    ],
 )
 def test_csv_conversion_with_single_file(input_path, separator, tmp_path):
     """
@@ -85,9 +86,7 @@ def test_output_file_is_saved_on_disk(tmp_path):
     input_path = "tests/data/csv_data/sample_csv_comma.csv"
 
     # When
-    csv2json.csv2json(
-        input_path, separator=",", output_path=tmp_path
-    )
+    csv2json.csv2json(input_path, separator=",", output_path=tmp_path)
 
     # Then
     existing_files = list(tmp_path.iterdir())

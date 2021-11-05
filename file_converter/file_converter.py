@@ -1,4 +1,6 @@
 """Main module for the command line interface"""
+import logging
+
 import click
 
 from file_converter.csv2json import csv2json
@@ -26,11 +28,21 @@ PREFIX_HELP = (
 )
 
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format=(
+        "%(levelname)s: "
+        "%(message)s"
+    ),
+)
+
+
 @click.command()
 @click.option("--conversion", default="csv2json", help=CONVERSION_HELP)
 @click.option("--input_path", default=".", help=INPUT_PATH_HELP)
 @click.option("--output_path", default=".", help=OUTPUT_PATH_HELP)
-@click.option("--separator", default=".", help=SEPARATOR_HELP)
+@click.option("--separator", default=",", help=SEPARATOR_HELP)
 @click.option("--prefix", default="", help=PREFIX_HELP)
 def file_converter(
     conversion: str,
@@ -53,6 +65,6 @@ def file_converter(
             output_path=output_path,
             separator=separator,
             prefix=prefix,
-            )
+        )
     else:
         click.echo("Unknown conversion type. Try 'csv2json' or 'json2csv'.")

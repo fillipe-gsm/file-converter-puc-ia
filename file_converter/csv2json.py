@@ -1,7 +1,8 @@
 """Converts CSV file(s) to a JSON format"""
 import json
-from pathlib import Path
 from typing import Any, Dict, List
+
+from file_converter.utils import process_input_path
 
 
 def csv2json(
@@ -42,11 +43,7 @@ def csv2json(
     Moreover, new files are created in the desired directory.
     """
 
-    input_path_pos = Path(input_path)
-    if input_path_pos.is_dir():
-        file_names = list(input_path_pos.rglob("*.csv"))
-    else:
-        file_names = [input_path_pos]
+    file_names = process_input_path(input_path, "csv")
 
     json_lists = [
         _convert_file(file_name, separator=separator)

@@ -1,7 +1,7 @@
 """Converts CSV file(s) to a JSON format"""
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List
 
 
 def csv2json(
@@ -11,8 +11,35 @@ def csv2json(
     prefix: str = "",
 ) -> List[Dict[str, Any]]:
     """Converts file(s) from CSV format to JSON
+    The converted files will be saved with the same file name, with a possible
+    prefix if desired.
     In case of a directory, all files must have the CSV extension and the same
     separator.
+
+    Parameters
+    ----------
+    input_path
+        A string with the path of the file or directory.
+        Examples:
+        - "./sample_file.csv"
+        - "/home/username/csv_dir/"
+        - "."
+
+    output_path
+        Output path to save the converted files
+
+    separator
+        Character used to separate the data in the CSV file. Possibilities are
+        {",", ":", ";", "\t"}
+
+    prefix
+        String to prepend the converted files
+
+    Returns
+    -------
+    A list of dictionaries. The list size is the same as the number of files to
+    be converted.
+    Moreover, new files are created in the desired directory.
     """
 
     input_path_pos = Path(input_path)
@@ -36,13 +63,10 @@ def csv2json(
 
 def _convert_file(
     file_name: str, separator: str = ","
-) -> List[Dict[str, str]]:
+) -> List[Dict[str, Any]]:
     """Converts file from CSV format to JSON"""
 
-    def _process_line(
-        line: str
-    ) -> Dict[str, Optional[Union[int, float, str]]]:
-        """"""
+    def _process_line(line: str) -> Dict[str, Any]:
         line_values = line.strip().split(separator)
         d_json = {}
         for key, value in zip(keys, line_values):
@@ -58,7 +82,7 @@ def _convert_file(
     return json_list
 
 
-def _parse_value(value: str) -> Optional[Union[int, float, str]]:
+def _parse_value(value: str) -> Any:
     """Parse an incoming value into a number, string or None
     Here are the possibilities:
         - An empty string: set to None to be converted to a null later;

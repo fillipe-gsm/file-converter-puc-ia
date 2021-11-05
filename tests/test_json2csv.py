@@ -82,7 +82,7 @@ def test_json_conversion_with_path(tmp_path):
 def test_output_file_is_saved_on_disk(tmp_path):
     """The output file must be saved on disk.
     Ensure a file is saved with the proper name, which is the same as the
-    input but CSV extension
+    input but with CSV extension
     """
     # Given
     input_path = "tests/data/json_data/sample_json.json"

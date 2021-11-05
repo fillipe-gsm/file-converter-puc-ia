@@ -13,6 +13,30 @@ def json2csv(
     """Converts file(s) from CSV format to JSON
     In case of a directory, all files must have the CSV extension and the same
     separator.
+
+    Parameters
+    ----------
+    input_path
+        A string with the path of the file or directory.
+        Examples:
+        - "./sample_file.json"
+        - "/home/username/json_dir/"
+        - "."
+
+    output_path
+        Output path to save the converted files
+
+    separator
+        Character used to separate the data in the converted CSV file.
+        Possibilities are {",", ":", ";", "\t"}
+
+    prefix
+        String to prepend the converted files
+
+    Returns
+    -------
+    A list of lists, each one with the rows of the converted CSV file.
+    Moreover, new files are created in the desired directory.
     """
 
     input_path_pos = Path(input_path)

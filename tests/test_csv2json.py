@@ -5,21 +5,20 @@ from file_converter import csv2json
 
 
 @pytest.mark.parametrize(
-  "file_name,separator", [
+  "input_path,separator", [
     ("tests/data/csv_data/sample_csv_semi_colon.csv", ";"),
     ("tests/data/csv_data/sample_csv_tab.csv", "\t"),
     ("tests/data/csv_data/sample_csv_colon.csv", ":"),
     ("tests/data/csv_data/sample_csv_comma.csv", ","),
   ]
 )
-def test_csv_conversion_with_single_file(file_name, separator, tmp_path):
+def test_csv_conversion_with_single_file(input_path, separator, tmp_path):
     """
     The generated JSON file must be such that:
         - Each element has all headers as keys;
         - There are as many elements as CSV rows.
     """
     # Given
-    # file_name = Path.cwd().joinpath(file_name)
     expected_keys = {
         "apn",
         "zip_code",
@@ -33,7 +32,7 @@ def test_csv_conversion_with_single_file(file_name, separator, tmp_path):
 
     # When
     json_list = csv2json.csv2json(
-        file_name, separator=separator, output_path=tmp_path
+        input_path, separator=separator, output_path=tmp_path
     )[0]
 
     # Then
@@ -48,11 +47,11 @@ def test_csv_conversion_with_single_file_missing_info(tmp_path):
     In this sample, the second row has a missing `zip_code` and `price`.
     """
     # Given
-    file_name = "tests/data/csv_data/sample_csv_missing_info.csv"
+    input_path = "tests/data/csv_data/sample_csv_missing_info.csv"
 
     # When
     json_list = csv2json.csv2json(
-        file_name, separator=",", output_path=tmp_path
+        input_path, separator=",", output_path=tmp_path
     )[0]
 
     # Then
@@ -83,11 +82,11 @@ def test_output_file_is_saved_on_disk(tmp_path):
     input.
     """
     # Given
-    file_name = "tests/data/csv_data/sample_csv_comma.csv"
+    input_path = "tests/data/csv_data/sample_csv_comma.csv"
 
     # When
     csv2json.csv2json(
-        file_name, separator=",", output_path=tmp_path
+        input_path, separator=",", output_path=tmp_path
     )
 
     # Then
@@ -100,12 +99,12 @@ def test_output_file_is_saved_on_disk(tmp_path):
 def test_output_file_is_saved_on_disk_with_prefix(tmp_path):
     """Save as before, but add a prefix to the file name"""
     # Given
-    file_name = "tests/data/csv_data/sample_csv_comma.csv"
+    input_path = "tests/data/csv_data/sample_csv_comma.csv"
     prefix = "banana_"
 
     # When
     csv2json.csv2json(
-        file_name, separator=",", output_path=tmp_path, prefix=prefix
+        input_path, separator=",", output_path=tmp_path, prefix=prefix
     )
 
     # Then

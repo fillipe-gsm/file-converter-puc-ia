@@ -3,11 +3,12 @@ name = "file-converter-fgsm"
 packages = [
     {include = "file_converter"}
 ]
-version = "0.1.0"
+version = "0.1.1"
 description = "Class project to convert files from CSV to JSON and vice-versa"
 authors = ["Fillipe Goulart <fillipe.gsm@tutanota.com>"]
 license="BSD 3"
 repository="https://github.com/fillipe-gsm/file-converter-puc-ia"
+readme="README.rst"
 
 [tool.poetry.dependencies]
 python = "^3.7"

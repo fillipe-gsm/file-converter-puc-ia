@@ -1,5 +1,4 @@
 """Converts CSV file(s) to a JSON format"""
-import json
 from typing import Any, Dict, List
 
 from file_converter.utils import process_input_path
@@ -52,8 +51,7 @@ def csv2json(
 
     for file_name, json_list in zip(file_names, json_lists):
         json_file_name = f"{output_path}/{prefix}{file_name.stem}.json"
-        with open(json_file_name, "w", encoding="utf-8") as f:
-            json.dump(json_list, f, indent=4)
+        _write_json(json_file_name, json_list)
 
     return json_lists
 
@@ -65,11 +63,7 @@ def _convert_file(
 
     def _process_line(line: str) -> Dict[str, Any]:
         line_values = line.strip().split(separator)
-        d_json = {}
-        for key, value in zip(keys, line_values):
-            d_json[key] = _parse_value(value)
-
-        return d_json
+        return dict(zip(keys, line_values))
 
     with open(file_name, "r", encoding="utf-8") as f:
         header = next(f)
@@ -79,22 +73,49 @@ def _convert_file(
     return json_list
 
 
+def _write_json(file_name: str, json_list: List[str]):
+    """
+    Emulate the `json.dump` function writing a JSON file from a list of dicts
+    """
+    lines = ""
+    lines += "[\n"
+    lines += "\n".join(_write_dictionary(d_json) for d_json in json_list)
+    lines += "]"
+
+    with open(file_name, "w", encoding="utf-8") as f:
+        f.writelines(lines)
+
+
+def _write_dictionary(d_json: Dict[str, str]):
+    """Write a dictionary as a formatted JSON.
+    The values are parsed depending on their format.
+    """
+    lines = "\t{\n"
+    lines += ",\n".join(
+        f"\t\t\"{key}\": {_parse_value(value)}"
+        for key, value in d_json.items()
+    )
+    lines += "\n"
+    lines += "\t}\n"
+    return lines
+
+
 def _parse_value(value: str) -> Any:
     """Parse an incoming value into a number, string or None
     Here are the possibilities:
-        - An empty string: set to None to be converted to a null later;
+        - An empty string: set to null;
         - All digits: convert into an integer;
         - Digits and a decimal point: convert into a float;
         - Otherwise, return the original string.
     """
     if not value:
-        return None
+        return "null"
 
     if value.isdigit():
-        return int(value)
+        return str(int(value))
 
     # Finally, we are left with a floating point or a regular string
     try:
-        return float(value)
+        return str(float(value))
     except ValueError:
-        return value
+        return f"\"{value}\""

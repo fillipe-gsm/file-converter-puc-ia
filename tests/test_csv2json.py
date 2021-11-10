@@ -57,8 +57,8 @@ def test_csv_conversion_with_single_file_missing_info(tmp_path):
 
     # Then
     json_dict_missing_row = json_list[1]
-    assert json_dict_missing_row["zip_code"] is None
-    assert json_dict_missing_row["price"] is None
+    assert not json_dict_missing_row["zip_code"]
+    assert not json_dict_missing_row["price"]
 
 
 def test_csv_conversion_with_path(tmp_path):

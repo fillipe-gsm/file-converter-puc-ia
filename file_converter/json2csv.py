@@ -1,7 +1,5 @@
 """Converts CSV file(s) to a JSON format"""
-import json
 from typing import Any, Dict, List
-
 
 from file_converter.utils import process_input_path
 
@@ -58,9 +56,7 @@ def json2csv(
 def _convert_file(file_name: str, separator: str = ",") -> List[str]:
     """Converts file from CSV format to JSON"""
 
-    with open(file_name, "r", encoding="utf-8") as f:
-        json_list = json.load(f)
-
+    json_list = _read_json(file_name)
     csv_list = []
 
     # Header
@@ -75,7 +71,7 @@ def _convert_file(file_name: str, separator: str = ",") -> List[str]:
         # We explicitly use `json_dict[key]` instead of iterating in the values
         # to ensure the same order
         data_line = separator.join(
-            _parse_value(json_dict[key]) for key in keys
+            json_dict[key] for key in keys
         )
         data_line += "\n"
         return data_line
@@ -86,13 +82,65 @@ def _convert_file(file_name: str, separator: str = ",") -> List[str]:
     return csv_list
 
 
-def _parse_value(value: Any) -> str:
+def _read_json(file_name: str):
+    """Emulate the `json.load` function
+
+    Notes
+    -----
+    We assume a JSON with the format
+    `
+    [
+        {
+            "key1": value1,
+            "key2": value2,
+        },
+        ...
+    ]
+    `
+
+    The algorithm thus groups all lines ignoring the brackets and splits each
+    dictionary with "},". For each individual dictionary, we can iterate over
+    each line split by ":" and get the key and values. Notice, while the key is
+    always a string, the value should be properly parsed as it can be a string,
+    an integer, a float or null. In the latter case, it is parsed as an empty
+    string in the final CSV.
+    """
+    with open(file_name, "r", encoding="utf-8") as f:
+        all_lines = "".join(line.strip() for line in f.readlines())
+
+    useful_lines = all_lines[1:-1]  # remove the closing brackets
+
+    def _read_dictionary(dict_str: str) -> Dict[str, str]:
+        dict_data_raw = dict_str.replace("{", "").split(",")
+        dict_data = {}
+        for item in dict_data_raw:
+            key, value = item.split(":")
+            dict_data[_parse_value(key)] = _parse_value(value)
+
+        return dict_data
+
+    return [
+        _read_dictionary(dict_str) for dict_str in useful_lines.split("},")
+    ]
+
+
+def _parse_value(value_raw: Any) -> str:
     """Parse a value to string
-    Differently from the CSV -> JSON case, all we need here is to replace
-    `None` with an empty string.
+
+    Notes
+    -----
+    Here are the conditions:
+    1. If the value is constrained by double quotes, it is a string;
+    2. If it is a `null`, return an empty string;
+    3. Otherwise it is a number. Return it as given.
     """
 
-    if value is None:
+    value = value_raw.strip()
+    # import ipdb; ipdb.set_trace()
+    if value[0] == "\"" and value[-1] == "\"":
+        return value[1:-1]
+
+    if value == "null":
         return ""
 
-    return str(value)
+    return value

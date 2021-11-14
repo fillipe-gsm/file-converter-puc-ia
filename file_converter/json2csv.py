@@ -108,7 +108,7 @@ def _read_json(file_name: str):
     with open(file_name, "r", encoding="utf-8") as f:
         all_lines = "".join(line.strip() for line in f.readlines())
 
-    useful_lines = all_lines[1:-1]  # remove the closing brackets
+    useful_lines = all_lines[1:-2]  # remove the closing brackets and last "}"
 
     def _read_dictionary(dict_str: str) -> Dict[str, str]:
         dict_data_raw = dict_str.replace("{", "").split(",")

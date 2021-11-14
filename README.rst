@@ -43,9 +43,9 @@ Suppose you have a file ``sample_file.csv`` in the current directory with the co
 
 .. code:: csv
 
-  header1,header2,header3
-  1,"a",1.5
-  2,"b",3.2
+  header1,header2,header3,header4
+  1,a,1.5,
+  2,b,3.2,info
 
 To convert it into a ``json`` format, run
 
@@ -57,21 +57,22 @@ and then you should have a ``sample_file.json`` in the same directory with the c
 
 .. code:: json
 
-  [
-      {
-          "header1": 1,
-          "header2": "\"a\"",
-          "header3": 1.5
-      },
-      {
-          "header1": 2,
-          "header2": "\"b\"",
-          "header3": 3.2
-      }
-  ]
+    [
+        {
+            "header1": 1,
+            "header2": "a",
+            "header3": 1.5,
+            "header4": null
+        },
+        {
+            "header1": 2,
+            "header2": "b",
+            "header3": 3.2,
+            "header4": "info"
+        }
+    ]
 
-
-Notice how the quotes have been escaped.
+Notice how the missing info became ``null`` and each type was properly parsed.
 
 The previous command is short for
 

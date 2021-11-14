@@ -77,16 +77,21 @@ def _write_json(file_name: str, json_list: List[str]):
     """
     Emulate the `json.dump` function writing a JSON file from a list of dicts
     """
+    json_list_len = len(json_list)
+
     lines = ""
     lines += "[\n"
-    lines += "\n".join(_write_dictionary(d_json) for d_json in json_list)
+    lines += "\n".join(
+        _write_dictionary(d_json, add_final_comma=i == json_list_len)
+        for i, d_json in enumerate(json_list, start=1)
+    )
     lines += "]"
 
     with open(file_name, "w", encoding="utf-8") as f:
         f.writelines(lines)
 
 
-def _write_dictionary(d_json: Dict[str, str]):
+def _write_dictionary(d_json: Dict[str, str], add_final_comma: bool = True):
     """Write a dictionary as a formatted JSON.
     The values are parsed depending on their format.
     """
@@ -96,7 +101,7 @@ def _write_dictionary(d_json: Dict[str, str]):
         for key, value in d_json.items()
     )
     lines += "\n"
-    lines += "\t}\n"
+    lines += "\t}," if not add_final_comma else "\t}\n"
     return lines
 
 

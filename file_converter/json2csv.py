@@ -70,9 +70,7 @@ def _convert_file(file_name: str, separator: str = ",") -> List[str]:
     def write_data_line(json_dict: Dict[str, Any]) -> str:
         # We explicitly use `json_dict[key]` instead of iterating in the values
         # to ensure the same order
-        data_line = separator.join(
-            json_dict[key] for key in keys
-        )
+        data_line = separator.join(json_dict[key] for key in keys)
         data_line += "\n"
         return data_line
 
@@ -137,7 +135,7 @@ def _parse_value(value_raw: Any) -> str:
 
     value = value_raw.strip()
     # import ipdb; ipdb.set_trace()
-    if value[0] == "\"" and value[-1] == "\"":
+    if value[0] == '"' and value[-1] == '"':
         return value[1:-1]
 
     if value == "null":

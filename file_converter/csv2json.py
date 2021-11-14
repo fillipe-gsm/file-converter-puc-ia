@@ -73,7 +73,7 @@ def _convert_file(
     return json_list
 
 
-def _write_json(file_name: str, json_list: List[str]):
+def _write_json(file_name: str, json_list: List[Dict[str, Any]]):
     """
     Emulate the `json.dump` function writing a JSON file from a list of dicts
     """
@@ -97,8 +97,7 @@ def _write_dictionary(d_json: Dict[str, str], add_final_comma: bool = True):
     """
     lines = "\t{\n"
     lines += ",\n".join(
-        f"\t\t\"{key}\": {_parse_value(value)}"
-        for key, value in d_json.items()
+        f'\t\t"{key}": {_parse_value(value)}' for key, value in d_json.items()
     )
     lines += "\n"
     lines += "\t}," if not add_final_comma else "\t}\n"
@@ -123,4 +122,4 @@ def _parse_value(value: str) -> Any:
     try:
         return str(float(value))
     except ValueError:
-        return f"\"{value}\""
+        return f'"{value}"'
